@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Password Generator</title>
+</head>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    color: light-dark(#333b3c, #efefec);
+    background-color: light-dark(#efedea, #223a2c);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    font-family: system-ui;
+  }
+
+  .checkboxes {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  input#password {
+    width: 300px;
+    height: 40px;
+    border: 1px solid light-dark(#333b3c, #efefec);
+    font-size: 20px;
+    padding: 0 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  button {
+    height: 40px;
+    font-size: 20px;
+    padding: 0 10px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: darkgreen;
+  }
+</style>
+
+<body>
+  <h1>Random Password Generator</h1>
+  <div id="app">
+    <div class="checkboxes">
+      <div class="input">
+        <input checked type="checkbox" id="uppercase">
+        <label for="uppercase">Uppercase</label>
+      </div>
+      <div class="input">
+        <input checked type="checkbox" id="lowercase">
+        <label for="lowercase">Lowercase</label>
+      </div>
+      <div class="input">
+        <input checked type="checkbox" id="numbers">
+        <label for="numbers">Numbers</label>
+      </div>
+      <div class="input">
+        <input checked type="checkbox" id="symbols">
+        <label for="symbols">Symbols</label>
+      </div>
+      <div class="input">
+        <input checked type="checkbox" id="length">
+        <label for="length">Length</label>
+        <input min="0" max="100" type="number" id="length-value" value="8">
+      </div>
+    </div>
+    <div>
+      <input id="password" type="text">
+      <button onclick="generatePassword()">Generate</button>
+      <button onclick="copyPassword()">Copy</button>
+    </div>
+  </div>
+</body>
+
+<script>
+  const $ = (tag) => document.querySelector(tag);
+  const lengthPassword = $('#length-value');
+  const uppercase = $('#uppercase');
+  const lowercase = $('#lowercase');
+  const numbers = $('#numbers');
+  const symbols = $('#symbols');
+  const password = $('#password');
+  function generatePassword() {
+    const length = lengthPassword.value;
+    const uppercaseChecked = uppercase.checked;
+    const lowercaseChecked = lowercase.checked;
+    const numbersChecked = numbers.checked;
+    const symbolsChecked = symbols.checked;
+    const passwordValue = randomPassword(length, uppercaseChecked, lowercaseChecked, numbersChecked, symbolsChecked);
+    password.value = passwordValue;
+  }
+
+  function randomPassword(length, uppercase, lowercase, numbers, symbols) {
+    let password = '';
+    let chars = '';
+    if (uppercase) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (lowercase) chars += 'abcdefghijklmnopqrstuvwxyz';
+    if (numbers) chars += '0123456789';
+    if (symbols) chars += '!@#$%^&*()';
+    for (let i = 0; i < length; i++) {
+      password += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return password;
+  }
+
+  function copyPassword() {
+    const password = $('#password');
+    password.select();
+    document.execCommand('copy');
+  }
+</script>
+
+</html>
