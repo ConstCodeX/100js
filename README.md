@@ -8,7 +8,7 @@ The aim of this repository is to create 100 unique JavaScript projects. Each pro
 ## Projects 📂
 Here is the list of all the projects included in this repository. The list will grow as more projects are added:
 
-1. Project 1 (Coming Soon)
+1. [Random Password Generator](./Random_Password_Generator)
 2. Project 2 (Coming Soon)
 3. Project 3 (Coming Soon)
 4. ...
