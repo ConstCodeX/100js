@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="dark">
+    <div class="player">
+        <div class="album-info">
+            <p class="album-from">PLAYING FROM ALBUM</p>
+            <h2 class="album-title">Album Title</h2>
+        </div>
+        <div class="album-art">
+            <img src="./assets/album.jpg" alt="Album Art">
+            <img class="album-art-main" src="./assets/album.jpg" alt="Album Art">
+            <img src="./assets/album.jpg" alt="Album Art">
+        </div>
+        <div class="track-info">
+            <h2 class="track-title">Song Title</h2>
+            <p class="track-artist">Artist Name</p>
+        </div>
+        <div class="progress-container">
+            <input type="range" id="progress" min="0" max="100" value="0">
+            <div class="progress-time">
+                <span id="current-time">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="control-btn">
+                <span class="material-symbols-outlined">
+                    repeat
+                </span>
+            </button>
+            <button id="prev" class="control-btn">
+                <span class="material-symbols-outlined">
+                    fast_rewind
+                </span>
+            </button>
+            <button id="play-pause" class="control-btn">
+                <span class="material-symbols-outlined">
+                    play_arrow
+                </span>
+            </button>
+            <button id="next" class="control-btn">
+                <span class="material-symbols-outlined">
+                    fast_forward
+                </span>
+            </button>
+            <button class="control-btn material-symbols-outlined" id="volume-btn">
+                volume_up
+            </button>
+            <div id="volume-menu" class="volume-menu">
+                <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+            </div>
+        </div>
+        <audio id="audio" src="./assets/sample.mp3"></audio>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>
