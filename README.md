@@ -8,8 +8,8 @@ The aim of this repository is to create 100 unique JavaScript projects. Each pro
 ## Projects 📂
 Here is the list of all the projects included in this repository. The list will grow as more projects are added:
 
-1. [Random Password Generator](./random_password_generator)
-2. [Music Player](./music_player)
+1. [Random Password Generator](./01-random-password-generator)
+2. [Music Player](./02-music-player)
 3. Project 3 (Coming Soon)
 4. ...
 5. Project 100 (Coming Soon)
