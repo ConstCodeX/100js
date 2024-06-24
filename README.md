@@ -10,7 +10,7 @@ Here is the list of all the projects included in this repository. The list will 
 
 1. [Random Password Generator](./01-random-password-generator)
 2. [Music Player](./02-music-player)
-3. Project 3 (Coming Soon)
+3. [Snake Game](./03-snake)
 4. ...
 5. Project 100 (Coming Soon)
 
