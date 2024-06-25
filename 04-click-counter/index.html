@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter and Mouse Times by Zones</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .zone {
+      width: 30%;
+      height: 200px;
+      border: 2px solid #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .counter {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="zone" data-label="zone1">
+    <p class="counter" id="counter1">0</p>
+    <p>Zone 1</p>
+  </div>
+  <div class="zone" data-label="zone2">
+    <p class="counter" id="counter2">0</p>
+    <p>Zone 2</p>
+  </div>
+  <div class="zone" data-label="zone3">
+    <p class="counter" id="counter3">0</p>
+    <p>Zone 3</p>
+  </div>
+  <script>
+    const zones = document.querySelectorAll('.zone');
+    const analytics = {};
+
+    zones.forEach(zone => {
+      const label = zone.getAttribute('data-label');
+      analytics[label] = { clicks: 0, time: 0, mouseEnteredAt: 0 };
+
+      zone.addEventListener('click', () => {
+        analytics[label].clicks++;
+        const counter = zone.querySelector('.counter');
+        counter.textContent = analytics[label].clicks;
+      });
+
+      zone.addEventListener('mouseenter', () => {
+        analytics[label].mouseEnteredAt = Date.now();
+      });
+
+      zone.addEventListener('mouseleave', () => {
+        const timeSpent = Date.now() - analytics[label].mouseEnteredAt;
+        analytics[label].time += timeSpent / 1000;
+        analytics[label].mouseEnteredAt = 0;
+      });
+    });
+
+    function processAnalytics() {
+      console.log('Analytics:', analytics);
+    }
+
+    setInterval(processAnalytics, 10000);
+  </script>
+</body>
+
+</html>
