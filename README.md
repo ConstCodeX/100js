@@ -12,7 +12,8 @@ Here is the list of all the projects included in this repository. The list will 
 2. [Music Player](./02-music-player)
 3. [Snake Game](./03-snake)
 4. [Click Counter](./04-click-counter)
-...
+5. [Game Selector](./05-game-selector)
+6. ...
 10. Project 100 (Coming Soon)
 
 Each project will have its own folder and a dedicated `README.md` file describing the project, its features, and how to use it.
