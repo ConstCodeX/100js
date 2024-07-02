@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast App</title>
+</head>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    color: light-dark(#333b3c, #efefec);
+    background-color: light-dark(#efedea, #2a2a2a);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: system-ui;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 320px;
+    height: 600px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: light-dark(#ffffff, #000000);
+    padding-top: 20px;
+  }
+
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    padding-top: 0px;
+    justify-content: space-between;
+  }
+
+  header h2 {
+    margin: 0;
+  }
+
+  header .user {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  header .user img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  main {
+    flex-grow: 1;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-bottom: 45px;
+  }
+
+  .podcasts-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5px;
+    padding-top: 1rem;
+  }
+
+  .podcasts-list-header {
+    display: flex;
+    padding-left: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .podcasts-list-header h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 16px;
+    color: #bdc3c7;
+  }
+
+  .podcasts-list-header p {
+    margin: 0;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    color: #bdc3c7;
+  }
+
+  .podcasts-list-body {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0 20px;
+    box-sizing: border-box;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .album-podcasts-list-item {
+    width: 180px;
+    display: flex;
+    height: 220px;
+    flex: 0 0 auto;
+    background-color: rgb(57, 57, 57);
+    overflow: hidden;
+    margin: 0;
+    border-radius: 10px;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .album-podcasts-list-item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    object-fit: cover;
+  }
+
+  .album-podcasts-list-item figcaption {
+    text-align: left;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    height: 100px;
+    box-sizing: border-box;
+    color: #ffffff;
+    background: linear-gradient(180deg, #1b1b1b3b 0%, #1b1b1bd0 10%, #1b1b1b 100%);
+  }
+
+  .album-podcasts-list-item figcaption .public-date {
+    font-size: 10px;
+    line-height: 16px;
+    color: #c9c9c9;
+  }
+
+  .album-podcasts-list-item figcaption p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
+    color: #eeeded;
+  }
+
+
+  .podcasts-list-item {
+    width: 120px;
+    display: flex;
+    height: 160px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    margin: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .podcasts-list-item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .podcasts-list-item figcaption {
+    text-align: left;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .podcast-show {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #bdc3c7;
+  }
+
+  .podcast-show-chapter {
+    margin: 0;
+    font-size: 12px;
+    line-height: 14px;
+    color: #8d8e8e;
+  }
+
+  .chip-player {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 70px;
+    height: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .chip-player .player-play {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 5px 0 5px 8.7px;
+    border-color: transparent transparent transparent #000000;
+    transform: rotate(0deg);
+  }
+
+  .chip-player .player-bar {
+    width: 20px;
+    height: 2px;
+    background-color: #676767;
+    border-radius: 1px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chip-player .player-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 2px;
+    z-index: 1;
+    background-color: #000000;
+    border-radius: 1px;
+  }
+
+  .chip-player .player-time {
+    font-size: 8px;
+    line-height: 16px;
+    color: #676767;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    padding: 5px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    background-color: #030303;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  footer button {
+    background-color: transparent;
+    border: 0;
+    color: #ababab;
+    font-size: 10px;
+    line-height: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer button:hover,
+  footer button.active {
+    color: #ffffff;
+  }
+
+  footer button span:last-child {
+    font-size: 8px;
+    line-height: 16px;
+  }
+
+  footer button span:first-child {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 16px;
+  }
+  
+  .player {
+    width: 96%;
+    margin: 0 2%;
+    height: 40px;
+    display: flex;
+    bottom: 50px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    align-items: center;
+    gap: 10px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    background-color: #222222;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  .player img{
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    object-fit: cover;
+  }
+
+  .player .player-detail {
+    display: flex;
+    width: calc(100% - 60px);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 10px;
+  }
+
+  .player .player-detail h3 {
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+  }
+
+  .player .player-detail p {
+    font-size: 10px;
+    line-height: 16px;
+    margin: 0;
+    color: #bdc3c7;
+  }
+
+  .player .player-control {
+    display: flex;
+    width: 20px;
+    gap: 10px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .player .player-control .player-play {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 0 5px 8.7px;
+    border-color: transparent transparent transparent #ffffff;
+    transform: rotate(0deg);
+  }
+</style>
+
+<body>
+  <div id="app">
+    <header>
+      <h2>Title</h2>
+      <div class="user">
+        <img src="https://picsum.photos/id/64/200/300" alt="User">
+      </div>
+    </header>
+    <main>
+      <div class="podcasts-list">
+        <div class="podcasts-list-header">
+          <h3>A continuacion</h3>
+        </div>
+        <div class="podcasts-list-body">
+          <figure class="album-podcasts-list-item">
+            <img src="https://picsum.photos/id/629/200/300" alt="Podcast">
+            <figcaption>
+              <span class="public-date">02/03/2023</span>
+              <p class="podcast-show-chapter">T12E05 - Rust: The Rust Programming Language </p>
+              <div class="chip-player">
+                <div class="player-play"></div>
+                <div class="player-bar"></div>
+                <div class="player-time">22:22</div>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="album-podcasts-list-item">
+            <img src="https://picsum.photos/id/237/200/300" alt="Podcast">
+            <figcaption>
+              <span class="public-date">02/03/2023</span>
+              <p class="podcast-show-chapter">T12E09 - Next.js: The React Framework for Production </p>
+              <div class="chip-player">
+                <div class="player-play"></div>
+                <div class="player-bar"></div>
+                <div class="player-time">22:22</div>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="album-podcasts-list-item">
+            <img src="https://picsum.photos/id/127/200/300" alt="Podcast">
+            <figcaption>
+              <span class="public-date">02/03/2023</span>
+              <p class="podcast-show-chapter">T12E09 - Next.js: The React Framework for Production </p>
+              <div class="chip-player">
+                <div class="player-play"></div>
+                <div class="player-bar"></div>
+                <div class="player-time">22:22</div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="podcasts-list">
+        <div class="podcasts-list-header">
+          <h3>Podria gustarte</h3>
+          <p>Según lo que escuchaste</p>
+        </div>
+        <div class="podcasts-list-body">
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/77/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">React JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/53/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Angular 20</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/7/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Vanilla JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/92/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Vue JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/23/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Rust Lang</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="podcasts-list">
+        <div class="podcasts-list-header">
+          <h3>Programas populares</h3>
+        </div>
+        <div class="podcasts-list-body">
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/87/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">React JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/3/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Angular 20</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/57/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Vanilla JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/922/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Vue JS</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+          <figure class="podcasts-list-item">
+            <img src="https://picsum.photos/id/123/200/300" alt="Podcast">
+            <figcaption>
+              <h5 class="podcast-show">Rust Lang</h5>
+              <p class="podcast-show-chapter">Chapter I</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </main>
+    <div class="player">
+      <img src="https://picsum.photos/id/64/200/300" alt="">
+      <div class="player-detail">
+        <h3>T12E05 - Rust: The Rust P...</h3>
+        <p>5 de marzo</p>
+      </div>
+      <div class="player-control">
+        <div class="player-play"></div>
+      </div>
+    </div>
+    <footer>
+      <button class="active"><span>🏠</span><span>Inicio</span></button>
+      <button><span>📖</span><span>Explorar</span></button>
+      <button><span>📚</span><span>Biblioteca</span></button>
+      <button><span>🔍</span><span>Buscar</span></button>
+    </footer>
+  </div>
+</body>
+
+<script>
+  const $ = (tag) => document.querySelectorAll(tag);
+</script>
+
+</html>
