@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guitar Hero</title>
+</head>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    color: light-dark(#333b3c, #efefec);
+    background: url('./assets/album.jpg') no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <canvas id="game-board" style="background-color: #2a2a2a22;"></canvas>
+  </div>
+</body>
+
+<script>
+  const $ = (tag) => document.querySelector(tag);
+  const WIDTH = 870;
+  const HEIGHT = 400;
+  const NUMBER_OF_DRUMS = 2;
+  const FINISH_LINE = 100;
+  const SPEED = 4;
+
+  class Circle {
+    x;
+    y;
+    radius;
+    leftColor;
+    rightColor;
+    context;
+    originalLeftColor;
+    originalRightColor;
+    speed = 100;
+
+    constructor(context, x, y, radius, leftColor, rightColor, speed) {
+      this.context = context;
+      this.speed = speed;
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.leftColor = leftColor;
+      this.rightColor = rightColor;
+      this.originalLeftColor = leftColor;
+      this.originalRightColor = rightColor;
+    }
+
+    draw() {
+      // Dibujar mitad izquierda
+      this.context.beginPath();
+      this.context.arc(this.x, this.y, this.radius, 0.5 * Math.PI, 1.5 * Math.PI, false);
+      this.context.lineTo(this.x, this.y);
+      this.context.closePath();
+      this.context.fillStyle = this.leftColor;
+      this.context.fill();
+
+      // Dibujar mitad derecha
+      this.context.beginPath();
+      this.context.arc(this.x, this.y, this.radius, 1.5 * Math.PI, 0.5 * Math.PI, false);
+      this.context.lineTo(this.x, this.y);
+      this.context.closePath();
+      this.context.fillStyle = this.rightColor;
+      this.context.fill();
+
+      // Dibujar borde blanco
+      this.context.beginPath();
+      this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+      this.context.lineWidth = 3;
+      this.context.strokeStyle = 'white';
+      this.context.stroke();
+
+      setTimeout(() => {
+        if (this.x < 0) {
+          this.x = WIDTH;
+        }
+        requestAnimationFrame(() => this.move(-1 * (this.speed), 0));
+      }, 100);
+    }
+
+    move(dx, dy) {
+      this.x += dx;
+      this.y += dy;
+    }
+
+    shine(side, duration = 100) {
+      if (side === 'left') {
+        this.leftColor = 'yellow';
+      } else if (side === 'right') {
+        this.rightColor = 'yellow';
+      }
+
+      setTimeout(() => {
+        if (side === 'left') {
+          this.leftColor = this.originalLeftColor;
+        } else if (side === 'right') {
+          this.rightColor = this.originalRightColor;
+        }
+      }, duration);
+    }
+  }
+
+  function drawAll(context, drawCallbacks) {
+    context.clearRect(0, 0, WIDTH, HEIGHT);
+    drawCallbacks.forEach(callback => callback());
+  }
+
+  function animate(context, drawCallbacks) {
+    drawAll(context, drawCallbacks);
+    requestAnimationFrame(() => animate(context, drawCallbacks));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = $('#game-board');
+    const context = canvas.getContext('2d');
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    let speed = SPEED;
+
+    const FIRST_GUITAR_STRING = new Circle(context, 670, 100, 50, 'red', 'blue', speed);
+
+    const drawCallbacks = [
+      () => drawLineOfMeta(context, FINISH_LINE, 0, FINISH_LINE, HEIGHT),
+      () => FIRST_GUITAR_STRING.draw(),
+      () => drawLineToSplitContextByPlayers(context, NUMBER_OF_DRUMS),
+    ];
+
+    animate(context, drawCallbacks);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        FIRST_GUITAR_STRING.shine('left');
+      } else if (event.key === 'ArrowRight') {
+        FIRST_GUITAR_STRING.shine('right');
+      }
+      drawAll(context, drawCallbacks);
+    });
+  });
+
+  function drawLineOfMeta(context, x1, y1, x2, y2) {
+    drawLine(context, x1 - 10, y1, x2 - 10, y2, 'grey', 10);
+    drawLine(context, x1, y1, x2, y2, 'white', 10);
+    drawLine(context, x1 + 10, y1, x2 + 10, y2, 'grey', 10);
+  }
+
+  function drawLine(context, x1, y1, x2, y2, color, width = 1) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.closePath();
+    context.lineWidth = width;
+    context.strokeStyle = color;
+    context.stroke();
+  }
+
+  function drawLineToSplitContextByPlayers(context, numberOfPlayers) {
+    const splits = HEIGHT / numberOfPlayers;
+    for (let i = 0; i < numberOfPlayers; i++) {
+      drawLine(context, 0, splits * i, WIDTH, splits * i, 'white', 1);
+    }
+  }
+</script>
+
+</html>
