@@ -136,20 +136,31 @@
     let speed = SPEED;
 
     const FIRST_GUITAR_STRING = new Circle(context, 670, 100, 50, 'red', 'blue', speed);
+    const SECOND_GUITAR_STRING = new Circle(context, 670, 200, 50, 'red', 'blue', speed);
+    const THIRD_GUITAR_STRING = new Circle(context, 670, 300, 50, 'red', 'blue', speed);
+    const FORTH_GUITAR_STRING = new Circle(context, 670, 400, 50, 'red', 'blue', speed);
 
     const drawCallbacks = [
       () => drawLineOfMeta(context, FINISH_LINE, 0, FINISH_LINE, HEIGHT),
       () => FIRST_GUITAR_STRING.draw(),
+      () => SECOND_GUITAR_STRING.draw(),
+      () => THIRD_GUITAR_STRING.draw(),
+      () => FORTH_GUITAR_STRING.draw(),
       () => drawLineToSplitContextByPlayers(context, NUMBER_OF_DRUMS),
     ];
 
     animate(context, drawCallbacks);
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') {
+      console.log(event.key)
+      if (event.key === 'A') {
         FIRST_GUITAR_STRING.shine('left');
-      } else if (event.key === 'ArrowRight') {
-        FIRST_GUITAR_STRING.shine('right');
+      } else if (event.key === 'S') {
+        SECOND_GUITAR_STRING.shine('right');
+      } else if (event.key === 'D') {
+        THIRD_GUITAR_STRING.shine('right');
+      } else if (event.key === 'F') {
+        FORTH_GUITAR_STRING.shine('right');
       }
       drawAll(context, drawCallbacks);
     });

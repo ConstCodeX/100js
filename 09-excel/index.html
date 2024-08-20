@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel</title>
+</head>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    color: light-dark(#333b3c, #efefec);
+    background-size: cover;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  thead,
+  tr th:first-child {
+    background-color: #eee;
+    color: #2a2a2a;
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    font-weight: normal;
+    text-align: center;
+    overflow: hidden;
+    width: 64px;
+    height: 20px;
+    max-width: 64px;
+    min-width: 64px;
+    cursor: pointer;
+    max-height: 20px;
+    min-height: 20px;
+    font-size: 14px;
+  }
+
+  thead th:hover,
+  tbody tr :first-child:hover {
+    background-color: #ddd;
+  }
+
+  tbody tr :not(:first-child):hover {
+    background-color: #16a55621;
+    border: 1px solid #b7b7b7;
+  }
+
+  tbody tr :not(:first-child) {
+    position: relative;
+    padding: 0;
+  }
+
+  .select-cell-row,
+  .select-cell-col {
+    background-color: #16a55621;
+    border: 1px solid #b7b7b7;
+  }
+
+  .select-col,
+  .select-row {
+    background-color: #bbb !important;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #16a556;
+    border-radius: 0;
+    outline: none;
+    text-align: left;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/7/73/Microsoft_Excel_2013-2019_logo.svg"
+      alt="">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</body>
+<script async src="main.js"></script>
+
+</html>
